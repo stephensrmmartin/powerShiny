@@ -14,7 +14,7 @@ shinyServer(function(input, output) {
     # generate and plot an rnorm distribution with the requested
     # number of observations
   	pwrFrame <- createPwrFrame(effectSizes=c(.02,.15,.35,input$effectSize),dfs=1:input$dfs,dfNumerator=input$dfNumerator,sig.level=input$sigLevel)
-  	plotPower(pwrFrame,guides=input$guides,cutoff=input$cutoff)
+  	print(plotPower(pwrFrame,guides=input$guides,cutoff=input$cutoff))
     
   })
   

@@ -15,14 +15,15 @@ shinyUI(pageWithSidebar(
   # Sidebar with a slider input for number of observations
   sidebarPanel(
     sliderInput("dfs", 
-                "Sample Size" 
-                min = 2,
+                "Sample Size",
+                min = 2, 
                 max = 5000, 
                 value = 1000),
     numericInput("effectSize",
-    	     	"Estimated f^2 value"
-    	     	"",
-    	     	".0001",),
+    	     	"Estimated f^2 value",
+    	     	"0",
+    	     	"10000",
+    	     	".035"),
     numericInput("dfNumerator",
     	     "Number of predictors in full model (excluding intercept)",
     	     "3",
@@ -34,7 +35,7 @@ shinyUI(pageWithSidebar(
     	     "1"),
     checkboxInput("guides",
     	      "Enable plot guides",
-    	      "TRUE"),
+    	      TRUE),
     numericInput("cutoff",
     	     "Power level cutoff for guides",
     	     ".80",

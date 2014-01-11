@@ -8,14 +8,22 @@ source("power.R")
 library(shiny)
 
 shinyServer(function(input, output) {
+	output$r2output <- renderText({
+		r2tof2(r2=input$r2value)
+	})
    
   output$pwrPlot <- renderPlot({
      
     # generate and plot an rnorm distribution with the requested
     # number of observations
-  	pwrFrame <- createPwrFrame(effectSizes=c(.02,.15,.35,input$effectSize),dfs=1:input$dfs,dfNumerator=input$dfNumerator,sig.level=input$sigLevel)
-  	print(plotPower(pwrFrame,guides=input$guides,cutoff=input$cutoff))
-    
+  	pwrFrame <- createPwrFrame(effectSizes=input$effectSize,
+  				   dfs=5:input$dfs,
+  				   dfNumerator=input$dfNumerator,
+  				   sig.level=input$sigLevel,
+  				   alternative=input$alternative,
+  				   test=input$test,
+  				   type=input$type)
+  	print(plotPower(pwrFrame,guides=input$guides,power=input$power,df=input$dfs.plot))
   })
   
 })

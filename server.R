@@ -22,7 +22,8 @@ shinyServer(function(input, output) {
   				   sig.level=input$sigLevel,
   				   alternative=input$alternative,
   				   test=input$test,
-  				   type=input$type)
+  				   type=input$type,
+  				   standard=input$standard)
   	print(plotPower(pwrFrame,guides=input$guides,power=input$power,df=input$dfs.plot))
   })
   

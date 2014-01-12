@@ -45,13 +45,13 @@ shinyUI(pageWithSidebar(
 			c("Two-sided" = "two.sided",
 			"Greater" = "greater",
 			"Less" = "less"),
-			"two.sided"),
+			"Two-sided"),
     		radioButtons("type",
 			"Two-sample, one-sample, or paired (d)",
 			c("Two-sample" = "two.sample",
 			"One-sample" = "one.sample",
 			"Paired" = "paired"),
-			"two.sample")
+			"Two-sample")
 	),
 	numericInput("effectSize",
 		"Effect size",
@@ -75,7 +75,7 @@ shinyUI(pageWithSidebar(
 			"Power Guides or DF Guides",
 			c("Power" = "powerGuides",
 			"DF" = "dfGuides"),
-			"powerGuides"),
+			"Power"),
 		conditionalPanel(
 			condition="input.interest == 'powerGuides'",
 			numericInput("power",

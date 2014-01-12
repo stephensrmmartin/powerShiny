@@ -32,7 +32,12 @@ shinyUI(pageWithSidebar(
 			"r2value",
 			"Convert r^2 to f^2",
 			0),
-		textOutput("r2output")),
+		textOutput("r2output"),
+		numericInput("dfNumerator",
+			"Number of predictors in full model (excluding intercept)",
+			4,
+			0,
+			10000)),
 	conditionalPanel(
 		condition="input.test == 'd' || input.test == 'r'",
 		radioButtons("alternative",
@@ -56,11 +61,6 @@ shinyUI(pageWithSidebar(
 	checkboxInput("standard",
 		"Include cohen's standard effect sizes",
 		TRUE),
-	numericInput("dfNumerator",
-		"Number of predictors in full model (excluding intercept)",
-		4,
-		0,
-		10000),
 	numericInput("sigLevel",
 		"Significance level",
 		.05,
@@ -90,12 +90,12 @@ shinyUI(pageWithSidebar(
 			20,
 			5,
 			10000)
-	)
-	)
-	),
+		)
+	)),
   
   # Show a plot of the generated distribution
 	mainPanel(
 	plotOutput("pwrPlot")
 	)
-	))
+	)
+)

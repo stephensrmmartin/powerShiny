@@ -8,12 +8,10 @@
 library(shiny)
 
 shinyUI(pageWithSidebar(
-  
   # Application title
-	headerPanel("Power Analysis for Multiple Regression"),
-  
+	headerPanel("Power Analysis Plotter"),
   # Sidebar with a slider input for number of observations
-	sidebarPanel(
+	sidebarPanel(tabsetPanel(tabPanel("Plot Options",
   		sliderInput("dfs", 
 			"Sample Sizes to consider",
 			min = 5, 
@@ -75,27 +73,46 @@ shinyUI(pageWithSidebar(
 			"Power Guides or DF Guides",
 			c("Power" = "powerGuides",
 			"DF" = "dfGuides"),
-			"Power"),
-		conditionalPanel(
-			condition="input.interest == 'powerGuides'",
-			numericInput("power",
-			"Power level of interest",
-			.8,
-			0,
-			1)),
-		conditionalPanel(
-			condition="input.interest == 'dfGuides'",
-			numericInput("dfs.plot",
-			"Degrees of freedom of interest",
-			20,
-			5,
-			10000)
-		)
+			"Power")),
+	conditionalPanel(
+		condition="input.interest == 'powerGuides'",
+		numericInput("power",
+		"Power level of interest",
+		.8,
+		0,
+		1)),
+	conditionalPanel(
+		condition="input.interest == 'dfGuides'",
+		numericInput("dfs.plot",
+		"Degrees of freedom of interest",
+		20,
+		5,
+		10000)
 	)),
-  
-  # Show a plot of the generated distribution
+	tabPanel("Download",
+		 numericInput("plotWidth",
+		 	     "Width",
+		 	     8,
+		 	     0),
+		 numericInput("plotHeight",
+		 	     "Height",
+		 	     4,
+		 	     0),
+		 radioButtons("plotFormat",
+		 	     "Filetype",
+		 	     c(".svg" = "svg",
+		 	       ".pdf" = "pdf"),
+		 	     ".svg"
+		 	     ),
+		 downloadButton("downloadButton",label="Download Plot"))
+	)),
 	mainPanel(
-	plotOutput("pwrPlot")
+		plotOutput("pwrPlot"),
+		p("Author: Stephen R. Martin"),
+		a("Github Page", href="http://github.com/stephensrmmartin/")
+		
+		
+	
 	)
 	)
 )

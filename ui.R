@@ -13,7 +13,7 @@ shinyUI(pageWithSidebar(
   # Sidebar with a slider input for number of observations
 	sidebarPanel(tabsetPanel(tabPanel("Plot Options",
   		sliderInput("dfs", 
-			"Sample Sizes to consider",
+			"Maximum sample size to consider",
 			min = 5, 
 			max = 10000, 
 			value = 1000),
@@ -58,7 +58,7 @@ shinyUI(pageWithSidebar(
 		10000),
 	checkboxInput("standard",
 		"Include cohen's standard effect sizes",
-		TRUE),
+		FALSE),
 	numericInput("sigLevel",
 		"Significance level",
 		.05,
@@ -68,27 +68,20 @@ shinyUI(pageWithSidebar(
 		"Enable plot guides",
 		TRUE),
 	conditionalPanel(
-		condition="input.guides == TRUE",
-		radioButtons("interest",
-			"Power Guides or DF Guides",
-			c("Power" = "powerGuides",
-			"DF" = "dfGuides"),
-			"Power")),
-	conditionalPanel(
-		condition="input.interest == 'powerGuides'",
-		numericInput("power",
+		"input.guides == 1",
+		em("Enter 0 to leave out guide"),
+	numericInput("power",
 		"Power level of interest",
 		.8,
 		0,
-		1)),
-	conditionalPanel(
-		condition="input.interest == 'dfGuides'",
-		numericInput("dfs.plot",
+		1),
+	numericInput("dfs.plot",
 		"Degrees of freedom of interest",
-		20,
-		5,
-		10000)
-	)),
+		0,
+		0,
+		10000))
+		),
+	
 	tabPanel("Download",
 		 numericInput("plotWidth",
 		 	     "Width",
@@ -104,9 +97,13 @@ shinyUI(pageWithSidebar(
 		 	       ".pdf" = "pdf"),
 		 	     ".svg"
 		 	     ),
+		 p("Note: Width and Height are in inches.
+		   Because both pdf and svg are scalable, these units 
+		   should be treated as relative."),
 		 downloadButton("downloadButton",label="Download Plot"))
 	)),
 	mainPanel(
+		h2("Plot Preview"),
 		plotOutput("pwrPlot"),
 		p("Author: Stephen R. Martin"),
 		a("Github Page", href="http://github.com/stephensrmmartin/")

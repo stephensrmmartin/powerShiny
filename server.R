@@ -16,6 +16,18 @@ shinyServer(function(input, output) {
      
     # generate and plot an rnorm distribution with the requested
     # number of observations
+	if(input$power == 0){
+		power <- NULL
+	}
+	else{
+		power <- input$power
+	}
+	if(input$dfs.plot == 0){
+		dfs.plot <- NULL
+	}
+	else{
+		dfs.plot <- input$dfs.plot
+	}
   	pwrFrame <- createPwrFrame(effectSizes=input$effectSize,
   				   dfs=5:input$dfs,
   				   dfNumerator=input$dfNumerator,
@@ -24,7 +36,7 @@ shinyServer(function(input, output) {
   				   test=input$test,
   				   type=input$type,
   				   standard=input$standard)
-  	print(plotPower(pwrFrame,guides=input$guides,power=input$power,df=input$dfs.plot))
+  	print(plotPower(pwrFrame,guides=input$guides,power=power,df=dfs.plot))
 	})
     
 	output$downloadButton <- downloadHandler(
@@ -32,6 +44,18 @@ shinyServer(function(input, output) {
 			paste0("powerPlot.",as.character(input$plotFormat))
 		},
 		content = function(file){
+			if(input$power == 0){
+				power <- NULL
+			}
+			else{
+				power <- input$power
+			}
+			if(input$dfs.plot == 0){
+				dfs.plot <- NULL
+			}
+			else{
+				dfs.plot <- input$dfs.plot
+			}
 			pwrFrame <- createPwrFrame(effectSizes=input$effectSize,
 						   dfs=5:input$dfs,
 						   dfNumerator=input$dfNumerator,
@@ -46,7 +70,7 @@ shinyServer(function(input, output) {
 			else{
 				pdf(file,width=input$plotWidth,height=input$plotHeight)
 			}
-			print(plotPower(pwrFrame,guides=input$guides,power=input$power,df=input$dfs.plot))
+			print(plotPower(pwrFrame,guides=input$guides,power=power,df=dfs.plot))
 			dev.off()
 		}
 		)

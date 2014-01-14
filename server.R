@@ -8,14 +8,71 @@ source("power.R")
 library(shiny)
 
 shinyServer(function(input, output) {
+	output$r2output <- renderText({
+		r2tof2(r2=input$r2value)
+	})
    
-  output$pwrPlot <- renderPlot({
+	output$pwrPlot <- renderPlot({
      
     # generate and plot an rnorm distribution with the requested
     # number of observations
-  	pwrFrame <- createPwrFrame(effectSizes=c(.02,.15,.35,input$effectSize),dfs=1:input$dfs,dfNumerator=input$dfNumerator,sig.level=input$sigLevel)
-  	print(plotPower(pwrFrame,guides=input$guides,cutoff=input$cutoff))
+	if(input$power == 0){
+		power <- NULL
+	}
+	else{
+		power <- input$power
+	}
+	if(input$dfs.plot == 0){
+		dfs.plot <- NULL
+	}
+	else{
+		dfs.plot <- input$dfs.plot
+	}
+  	pwrFrame <- createPwrFrame(effectSizes=input$effectSize,
+  				   dfs=5:input$dfs,
+  				   dfNumerator=input$dfNumerator,
+  				   sig.level=input$sigLevel,
+  				   alternative=input$alternative,
+  				   test=input$test,
+  				   type=input$type,
+  				   standard=input$standard)
+  	print(plotPower(pwrFrame,guides=input$guides,power=power,df=dfs.plot))
+	})
     
-  })
+	output$downloadButton <- downloadHandler(
+		filename = function(){
+			paste0("powerPlot.",as.character(input$plotFormat))
+		},
+		content = function(file){
+			if(input$power == 0){
+				power <- NULL
+			}
+			else{
+				power <- input$power
+			}
+			if(input$dfs.plot == 0){
+				dfs.plot <- NULL
+			}
+			else{
+				dfs.plot <- input$dfs.plot
+			}
+			pwrFrame <- createPwrFrame(effectSizes=input$effectSize,
+						   dfs=5:input$dfs,
+						   dfNumerator=input$dfNumerator,
+						   sig.level=input$sigLevel,
+						   alternative=input$alternative,
+						   test=input$test,
+						   type=input$type,
+						   standard=input$standard)
+			if(input$plotFormat == "svg"){
+				svg(file,width=input$plotWidth,height=input$plotHeight)
+			}
+			else{
+				pdf(file,width=input$plotWidth,height=input$plotHeight)
+			}
+			print(plotPower(pwrFrame,guides=input$guides,power=power,df=dfs.plot))
+			dev.off()
+		}
+		)
   
 })
